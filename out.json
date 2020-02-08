@@ -1,0 +1,104 @@
+[
+  {
+    "@timestamp": "2019-12-11T11:41:56+08:00",
+    "ampere": 0.0,
+    "cameo_projects": [
+      "561.taichung_500_iot"
+    ],
+    "cameo_tags": [
+      "台中",
+      "rest"
+    ],
+    "co": 0.927191601564175,
+    "deviceId": "6201492301",
+    "devstat": 0.0,
+    "humidity": 66.78,
+    "humidity_main": 57.39,
+    "lat": 24.222725,
+    "location": {
+      "lat": 24.222725,
+      "lon": 120.52705
+    },
+    "lon": 120.52705,
+    "name": "TW010108A0100347",
+    "no2": 14.636371996508107,
+    "noise": null,
+    "o3": 2.12659425010402,
+    "pm1": 17.0,
+    "pm10": 28.0,
+    "pm2_5": 19.64,
+    "temperature": 25.08,
+    "temperature_main": 27.22,
+    "time": "2019-12-11 11:41:56.000",
+    "voc": 485.0,
+    "volt": 0.0
+  },
+  {
+    "@timestamp": "2019-12-11T11:41:56+08:00",
+    "ampere": 0.0,
+    "cameo_projects": [
+      "561.taichung_500_iot"
+    ],
+    "cameo_tags": [
+      "台中",
+      "rest"
+    ],
+    "co": 0.927191601564175,
+    "deviceId": "6201492301",
+    "devstat": 0.0,
+    "humidity": 66.78,
+    "humidity_main": 57.39,
+    "lat": 24.222725,
+    "location": {
+      "lat": 24.222725,
+      "lon": 120.52705
+    },
+    "lon": 120.52705,
+    "name": "TW010108A0100347",
+    "no2": 14.636371996508107,
+    "noise": null,
+    "o3": 2.12659425010402,
+    "pm1": 17.0,
+    "pm10": 28.0,
+    "pm2_5": 19.64,
+    "temperature": 25.08,
+    "temperature_main": 27.22,
+    "time": "2019-12-11 11:41:56.000",
+    "voc": 485.0,
+    "volt": 0.0
+  },
+  {
+    "@timestamp": "2019-12-11T11:41:56+08:00",
+    "ampere": 0.0,
+    "cameo_projects": [
+      "561.taichung_500_iot"
+    ],
+    "cameo_tags": [
+      "台中",
+      "rest"
+    ],
+    "co": 0.927191601564175,
+    "deviceId": "6201492301",
+    "devstat": 0.0,
+    "humidity": 66.78,
+    "humidity_main": 57.39,
+    "lat": 24.222725,
+    "location": {
+      "lat": 24.222725,
+      "lon": 120.52705
+    },
+    "lon": 120.52705,
+    "name": "TW010108A0100347",
+    "no2": 14.636371996508107,
+    "noise": null,
+    "o3": 2.12659425010402,
+    "pm1": 17.0,
+    "pm10": 28.0,
+    "pm2_5": 19.64,
+    "temperature": 25.08,
+    "temperature_main": 27.22,
+    "time": "2019-12-11 11:41:56.000",
+    "voc": 485.0,
+    "volt": 0.0
+  }
+]

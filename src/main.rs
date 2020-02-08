@@ -1,6 +1,11 @@
-mod read_json;
+use std::time::{Instant};
 
-fn main() {
-    println!("Hello, world!");
-    read_json::read_json();
+mod write_json_file;
+
+fn main() -> std::io::Result<()> {
+    let start = Instant::now();
+    write_json_file::write_json_file()?;
+    let duration = start.elapsed();
+    println!("duration:{:?}", duration);
+    Ok(())
 }
