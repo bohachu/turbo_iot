@@ -1,39 +1,168 @@
+== start coding 20200208 18:24 ==
+為了能夠比較Python、C++、Rust三種語言的速度，我們挑選了一個實戰任務會有的IoT大量資料寫入與讀出，並且未來將拿來與ElasticSearch真實配置情況進行速度比較。
 
+== python 15.26 secs ==
+def speedTestPython1():
+    str1 = ""
+    for i in range(123456789):
+        str1 += '{"pm25":100}'
+
+== python 20.43 secs ==
+def speedTestPython2():
+    str1 = ""
+    cnt1 = 0
+    while True:
+        if cnt1 > 123456789:
+            break
+        str1 += '{"pm25":100}'
+        cnt1 += 1
+
+== c++ release 2.77 secs , 18.8k size ==
+void speedTestCpp1(){
+    std::string str1;
+    for(int i=0;i<123456789;i++){
+        str1.append("{\"pm25\":100}");
+    }
+}
+
+== c++ release 0.857 secs , 18.8k size  ==
+char lstCh[123456789*15];
+void speedTestCpp2(){
+    for(int i=0;i<123456789*14;i+=14) {
+        lstCh[i]='{';
+        lstCh[i+1]='"';
+        lstCh[i+2]='p';
+        lstCh[i+3]='m';
+        lstCh[i+4]='2';
+        lstCh[i+5]='5';
+        lstCh[i+6]='"';
+        lstCh[i+7]=':';
+        lstCh[i+8]='1';
+        lstCh[i+9]='0';
+        lstCh[i+10]='0';
+        lstCh[i+11]='}';
+        lstCh[i+12]='"';
+        lstCh[i+13]=0;
+    }
+}
+
+== rust cargo build release 1.11 secs , 289.2k size ==
+pub fn speed_test_rust1() {
+    let mut str1 =String::from("");
+    for _n in 0..123456789 {
+        str1 += "{\"pm25\":100}";
+    }
+}
+
+== rust cargo build release 1.15 secs , 289.2k size ==
+pub fn speed_test_rust2() {
+    let mut str1 = String::from("");
+    let mut int_count = 0;
+    loop {
+        int_count += 1;
+        if int_count > 123456789 {
+            break;
+        }
+        str1.push_str("{\"pm25\":100}");
+    }
+}
+
+== rust cargo build release 2.52 secs , 289.2k size ==
+pub fn speed_test_rust3() {
+    let mut str1 = String::from("");
+    let mut int_count = 0;
+    loop {
+        int_count += 1;
+        if int_count > 123456789 {
+            break;
+        }
+        str1.push('{');
+        str1.push('"');
+        str1.push('p');
+        str1.push('m');
+        str1.push('2');
+        str1.push('5');
+        str1.push('"');
+        str1.push(':');
+        str1.push('1');
+        str1.push('0');
+        str1.push('0');
+        str1.push('}');
+    }
+}
+
+== rust write 2020_1_1_R001_臺中五百點.json ==
+duration: 4.8 secs to 0.77 secs
+579.6MB
+    for _i in 1..2 {
+        write_file(str_json, format!("2020_1_{}_R001_臺中五百點.json", _i).as_ref()).expect("err write_json_file.rs 42");
+    }
+    Ok(())
+}
+
+fn write_file(str_json: &str, str_region_name: &str) -> std::io::Result<()> {
+    let mut file = File::create(str_region_name)?;
+    write!(file, "[")?;
+    let content = get_content(str_json);
+    file_write_all(&mut file, content).expect("err file_write_all 52");
+    Ok(())
+}
+
+fn file_write_all(file: &mut File, content: String) -> std::io::Result<()> {
+    file.write_all(content.as_ref())?;
+    Ok(())
+}
+
+fn get_content(str_json: &str) -> String {
+    let mut content: String = "".parse().unwrap();
+    for _i in 0..60 * 24 * 500 {
+        content = content + str_json;
+    }
+    content
+}
+
+== python write 2020_1_1_R001_臺中五百點.json ==
+duration: 1.71 secs
+625MB
+
+
+
+~~
 
 
 == 20200208 15:36 ==
 已經有第一個 JSON sample file
 {
-  "@timestamp": "2019-12-11T11:41:56+08:00",
-  "ampere": 0.0,
-  "cameo_projects": [
-    "561.taichung_500_iot"
-  ],
-  "cameo_tags": [
-    "台中",
-    "rest"
-  ],
-  "co": 0.927191601564175,
-  "deviceId": "6201492301",
-  "devstat": 0.0,
-  "humidity": 66.78,
-  "humidity_main": 57.39,
-  "lat": 24.222725,
-  "location": {
-    "lat": 24.222725,
-    "lon": 120.52705
-  },
-  "lon": 120.52705,
-  "name": "TW010108A0100347",
-  "no2": 14.636371996508107,
-  "noise": null,
-  "o3": 2.12659425010402,
-  "pm1": 17.0,
-  "pm10": 28.0,
-  "pm2_5": 19.64,
-  "temperature": 25.08,
-  "temperature_main": 27.22,
-  "time": "2019-12-11 11:41:56.000",
-  "voc": 485.0,
-  "volt": 0.0
-}
+   "@timestamp": "2019-12-11T11:41:56+08:00",
+   "ampere": 0.0,
+   "cameo_projects": [
+     "561.taichung_500_iot"
+   ],
+   "cameo_tags": [
+     "台中",
+     "rest"
+   ],
+   "co": 0.927191601564175,
+   "deviceId": "6201492301",
+   "devstat": 0.0,
+   "humidity": 66.78,
+   "humidity_main": 57.39,
+   "lat": 24.222725,
+   "location": {
+     "lat": 24.222725,
+     "lon": 120.52705
+   },
+   "lon": 120.52705,
+   "name": "TW010108A0100347",
+   "no2": 14.636371996508107,
+   "noise": null,
+   "o3": 2.12659425010402,
+   "pm1": 17.0,
+   "pm10": 28.0,
+   "pm2_5": 19.64,
+   "temperature": 25.08,
+   "temperature_main": 27.22,
+   "time": "2019-12-11 11:41:56.000",
+   "voc": 485.0,
+   "volt": 0.0
+ }
