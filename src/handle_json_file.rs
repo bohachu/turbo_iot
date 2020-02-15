@@ -164,23 +164,23 @@ pub fn origin_to_turbo_memory() {
 
     let time = Instant::now();
     let mut str_turbo: String = "".to_string();
-    let str_comma=",".parse().unwrap();
-    let str_break_line="\n".parse().unwrap();
+    let str_comma = ",".parse().unwrap();
+    let str_break_line = "\n".parse().unwrap();
     for str_line in split {
         if str_line.contains("deviceId") {
-            let tokens:Vec<&str>= str_line.split("\"").collect();
+            let tokens: Vec<&str> = str_line.split("\"").collect();
             str_turbo += tokens[3];
             str_turbo.push(str_comma);
         }
         if str_line.contains("\"time\"") {
-            let tokens:Vec<&str>= str_line.split("\"").collect();
+            let tokens: Vec<&str> = str_line.split("\"").collect();
             str_turbo += tokens[3];
             str_turbo.push(str_comma);
         }
         if str_line.contains("voc") {
-            let tokens:Vec<&str>= str_line.split("\"").collect();
-            let int_len=tokens[2].len();
-            str_turbo += tokens[2][2..int_len-1].as_ref();
+            let tokens: Vec<&str> = str_line.split("\"").collect();
+            let int_len = tokens[2].len();
+            str_turbo += tokens[2][2..int_len - 1].as_ref();
             str_turbo.push(str_break_line);
         }
     }
@@ -190,4 +190,83 @@ pub fn origin_to_turbo_memory() {
     let mut file_turbo = File::create("turbo.csv").expect("err 174");
     file_write_all(&mut file_turbo, str_turbo).expect("err 175");
     println!("004 最後寫入檔案 turbo.csv: {:?}", time.elapsed());
+}
+
+pub fn origin_to_turbo_regex() {
+    let time = Instant::now();
+    let mut file_json = File::open("2020_1_1_R001_臺中五百點.json").unwrap();
+    let mut str_json = String::new();
+    file_json.read_to_string(&mut str_json).unwrap();
+    println!("001 全部JSON讀取到記憶體當中: {:?}", time.elapsed());
+
+    let time = Instant::now();
+    //20200209 17:54 製作到一半太痛苦了先放棄一下
+    let re = Regex::new("(\"name\":)([^,]+),").unwrap();
+    let mut int_cnt = 0;
+    for caps in re.captures_iter(str_json.as_ref()) {
+        int_cnt += 1;
+        //let str1=&cap[1];
+    }
+    println!("002 regex: {:?}, int_cnt:{}", time.elapsed(), int_cnt);
+    /*
+    let re = Regex::new(r"'(?P<title>[^']+)'\s+\((?P<year>\d{4})\)").unwrap();
+    let text = "'Citizen Kane' (1941), 'The Wizard of Oz' (1939), 'M' (1931).";
+    for caps in re.captures_iter(text) {
+        println!("Movie: {:?}, Released: {:?}",
+                 &caps["title"], &caps["year"]);
+    }
+    */
+}
+
+pub fn origin_to_turbo_index() {
+    let time = Instant::now();
+    let mut file_json = File::open("2020_1_1_R001_臺中五百點.json").unwrap();
+    let mut str_json = String::new();
+    file_json.read_to_string(&mut str_json).unwrap();
+    println!("001 全部JSON讀取到記憶體當中: {:?}", time.elapsed());
+
+    let time = Instant::now();
+    let split = str_json.split("\n");
+    println!("002 斷行切割: {:?}", time.elapsed());
+
+    let time = Instant::now();
+    let mut str_turbo: String = "".to_string();
+    for str_line in split {
+        let int_index_name = str_line.find("\"name\": \"");
+        let int_index_time = str_line.find("\"time\": \"");
+        let int_index_voc = str_line.find("\"voc\": \"");
+        if int_index_name > Some(0) { str_turbo += str_line; }
+        if int_index_time > Some(0) { str_turbo += str_line; }
+        if int_index_voc > Some(0) { str_turbo += str_line; }
+    }
+    println!("003 運用 str_line.find 進行索引切割: {:?}", time.elapsed());
+
+    let time = Instant::now();
+    let mut file_turbo = File::create("turbo.csv").expect("err 174");
+    file_write_all(&mut file_turbo, str_turbo).expect("err 175");
+    println!("004 最後寫入檔案 turbo.csv: {:?}", time.elapsed());
+}
+
+pub fn read_csv() {
+    let time = Instant::now();
+    let mut file_csv = File::open("turbo.csv").unwrap();
+    let mut str_csv = String::new();
+    file_csv.read_to_string(&mut str_csv).unwrap();
+    println!("001 read_csv 全部 CSV 讀取到記憶體當中: {:?}", time.elapsed());
+
+    let time = Instant::now();
+    let split = str_csv.lines();
+    println!("002 CSV 斷行切割: {:?}", time.elapsed());
+
+    let time = Instant::now();
+    let mut str_turbo: String = "".to_string();
+    let int_cnt=0;
+
+    for str_line in split {
+        let mut str_comma = str_line.split(",");
+        let str_device_id:String=str_comma.next().unwrap().to_string();
+        let str_date=str_comma.next().unwrap().to_string();
+        let int_voc:f32=str_comma.next().unwrap().to_string().parse().unwrap();
+    }
+    println!("003 CSV split_comma 區分 字串 日期 浮點數VOC，一行一行讀出來進行三欄位切割: {:?}", time.elapsed());
 }

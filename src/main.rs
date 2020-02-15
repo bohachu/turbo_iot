@@ -19,7 +19,7 @@ fn main() -> std::io::Result<()> {
 //    println!("duration:{:?}", duration);
 
     let time = Instant::now();
-    handle_json_file::origin_to_turbo_memory();
-    println!("all origin_to_turbo_memory: {:?} secs", time.elapsed());
+    handle_json_file::read_csv();
+    println!("all read_csv: {:?} secs", time.elapsed());
     Ok(())
 }
