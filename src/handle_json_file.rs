@@ -260,13 +260,154 @@ pub fn read_csv() {
 
     let time = Instant::now();
     let mut str_turbo: String = "".to_string();
-    let int_cnt=0;
+    let int_cnt = 0;
 
     for str_line in split {
         let mut str_comma = str_line.split(",");
-        let str_device_id:String=str_comma.next().unwrap().to_string();
-        let str_date=str_comma.next().unwrap().to_string();
-        let int_voc:f32=str_comma.next().unwrap().to_string().parse().unwrap();
+        let str_device_id: String = str_comma.next().unwrap().to_string();
+        let str_date = str_comma.next().unwrap().to_string();
+        let int_voc: f32 = str_comma.next().unwrap().to_string().parse().unwrap();
     }
     println!("003 CSV split_comma 區分 字串 日期 浮點數VOC，一行一行讀出來進行三欄位切割: {:?}", time.elapsed());
+}
+
+pub fn read_csv_fixed_width() {
+    let time = Instant::now();
+    let mut file_csv = File::open("turbo.csv").unwrap();
+    let mut str_csv = String::new();
+    file_csv.read_to_string(&mut str_csv).unwrap();
+    println!("001 read_csv 全部 CSV 讀取到記憶體當中: {:?}", time.elapsed());
+
+    let time = Instant::now();
+    let split = str_csv.lines();
+    println!("002 CSV 斷行切割: {:?}", time.elapsed());
+
+    let time = Instant::now();
+    let mut str_turbo: String = "".to_string();
+    let int_cnt = 0;
+
+    let mut str_device_id: String = "".to_string();
+    let mut str_date: String = "".to_string();
+    let mut str_voc: String = "".to_string();
+
+    for str_line in split {
+        str_device_id = (&str_line[..10]).parse().unwrap();
+        str_date = (&str_line[11..34]).parse().unwrap();
+        str_voc = (&str_line[35..38]).parse().unwrap();
+    }
+    println!("003 CSV 固定寬度 fixed width 區分 字串 日期 浮點數VOC，一行一行讀出來進行三欄位切割: {:?},{},{},{}", time.elapsed(), str_device_id, str_date, str_voc);
+}
+
+pub fn read_csv_fixed_width_turbo() {
+    let time = Instant::now();
+    let mut file_csv = File::open("turbo.csv").unwrap();
+    let mut str_csv = String::new();
+    file_csv.read_to_string(&mut str_csv).unwrap();
+    println!("001 read_csv 全部 CSV 讀取到記憶體當中: {:?}", time.elapsed());
+
+    let time = Instant::now();
+    let split = str_csv.lines();
+    println!("002 CSV 斷行切割: {:?}", time.elapsed());
+
+    let time = Instant::now();
+    let mut str_turbo: String = "".to_string();
+    let int_cnt = 0;
+
+    let mut str_device_id: String = "".to_string();
+    let mut str_date: String = "".to_string();
+    let mut i32_voc: i32 = 0;
+    for str_line in split {
+        str_device_id = (&str_line[..10]).parse().unwrap();
+        str_date = (&str_line[11..34]).parse().unwrap();
+        i32_voc = (&str_line[35..38]).parse().unwrap();
+    }
+    println!("003 CSV 固定寬度 fixed width 區分 字串 日期 浮點數VOC，一行一行讀出來進行三欄位切割: {:?},{},{},{}", time.elapsed(), str_device_id, str_date, i32_voc);
+}
+
+pub fn read_csv_voc() {
+    let time = Instant::now();
+    let mut file_csv = File::open("data/csv/PK2CKTCE4F2GGU0FCS/2020-01_voc.csv").unwrap();
+    let mut str_csv = String::new();
+    file_csv.read_to_string(&mut str_csv).unwrap();
+    println!("001 read_csv_voc 全部 CSV 讀取到記憶體當中: {:?}", time.elapsed());
+
+    let time = Instant::now();
+    let split = str_csv.lines();
+    println!("002 CSV 斷行切割: {:?}", time.elapsed());
+
+    let time = Instant::now();
+
+    for str_line in split {
+        let mut str_comma = str_line.split(",");
+        let str_device_id: String = str_comma.next().unwrap().to_string();
+        let str_date: String = str_comma.next().unwrap().to_string();
+        let str_voc: String = str_comma.next().unwrap().to_string();
+    }
+    println!("003 CSV split_comma 區分 字串 日期 VOC，一行一行讀出來進行三欄位切割: {:?}", time.elapsed());
+}
+
+pub fn read_csv_vec() {
+    let time = Instant::now();
+    let mut file_csv = File::open("data/csv/PK2CKTCE4F2GGU0FCS/2020-01_voc.csv").unwrap();
+    let mut str_csv = String::new();
+    file_csv.read_to_string(&mut str_csv).unwrap();
+    println!("001 read_csv_voc 全部 CSV 讀取到記憶體當中: {:?}", time.elapsed());
+
+    let time = Instant::now();
+    let split = str_csv.lines();
+    println!("002 CSV 斷行切割: {:?}", time.elapsed());
+
+    let time = Instant::now();
+
+    let mut vec=Vec::new();//with_capacity(800*1024*1024);
+    for str_line in split {
+        let mut str_comma = str_line.split(",");
+        vec.push(str_comma.next().unwrap().to_string());
+        vec.push(str_comma.next().unwrap().to_string());
+        vec.push(str_comma.next().unwrap().to_string());
+    }
+    println!("003 read_csv_vec 區分 字串 日期 VOC，一行一行讀出來進行三欄位切割: {:?}", time.elapsed());
+}
+
+pub fn read_csv_vec_turbo() {
+    let time = Instant::now();
+    let mut file_csv = File::open("data/csv/PK2CKTCE4F2GGU0FCS/2020-01_voc.csv").unwrap();
+    let mut str_csv = String::new();
+    file_csv.read_to_string(&mut str_csv).unwrap();
+    println!("001 read_csv_voc 全部 CSV 讀取到記憶體當中: {:?}", time.elapsed());
+
+    let time = Instant::now();
+    let split = str_csv.lines();
+    println!("002 CSV 斷行切割: {:?}", time.elapsed());
+
+    let time = Instant::now();
+
+    let mut vec=Vec::new();//with_capacity(800*1024*1024);
+    for str_line in split {
+        //vec.push(str_line);
+        vec.push(&str_line[0..str_line.len()-1]);
+        vec.push(&str_line[0..str_line.len()-2]);
+        vec.push(&str_line[0..str_line.len()-3]);
+        //println!("{:?}",str_line);
+    }
+    println!("003, read_csv_vec_turbo, vec.push(str_line), {:?}", time.elapsed());
+}
+
+pub fn read_csv_vec_fix() {
+    let time = Instant::now();
+    let mut file_csv = File::open("data/csv/PK2CKTCE4F2GGU0FCS/2020-01_voc.csv").unwrap();
+    let mut str_csv = String::new();
+    file_csv.read_to_string(&mut str_csv).unwrap();
+    println!("001 全部 CSV 讀取到記憶體當中: {:?}", time.elapsed());
+    let mut vec=Vec::new();//with_capacity(800*1024*1024);
+    let time = Instant::now();
+    let mut i =0;
+    loop{
+        i+=13;
+        if i+13>=str_csv.len(){
+            break;
+        }
+        vec.push(&str_csv[i..i+10]);
+    }
+    println!("003, read_csv_vec_fix, vec.push(str_line), {:?}", time.elapsed());
 }

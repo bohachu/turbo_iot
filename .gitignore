@@ -1,3 +1,4 @@
 /target
 **/*.rs.bk
 /2020_1_1_R001_臺中五百點.json
+/data/

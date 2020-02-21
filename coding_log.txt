@@ -1,3 +1,63 @@
+001 read_csv 全部 CSV 讀取到記憶體當中: 12.902881ms
+002 CSV 斷行切割: 23ns
+003 CSV 固定寬度 fixed width 區分 字串 日期 浮點數VOC，一行一行讀出來進行三欄位切割: 179.376315ms,6201492301,2019-12-11 11:41:56.000,485
+read_csv_fixed_width_turbo: 193.635472ms secs
+pub fn read_csv_fixed_width_turbo() {
+    let time = Instant::now();
+    let mut file_csv = File::open("turbo.csv").unwrap();
+    let mut str_csv = String::new();
+    file_csv.read_to_string(&mut str_csv).unwrap();
+    println!("001 read_csv 全部 CSV 讀取到記憶體當中: {:?}", time.elapsed());
+
+    let time = Instant::now();
+    let split = str_csv.lines();
+    println!("002 CSV 斷行切割: {:?}", time.elapsed());
+
+    let time = Instant::now();
+    let mut str_turbo: String = "".to_string();
+    let int_cnt = 0;
+
+    let mut str_device_id: String = "".to_string();
+    let mut str_date: String = "".to_string();
+    let mut i32_voc: i32 = 0;
+    for str_line in split {
+        str_device_id = (&str_line[..10]).parse().unwrap();
+        str_date = (&str_line[11..34]).parse().unwrap();
+        i32_voc = (&str_line[35..38]).parse().unwrap();
+    }
+    println!("003 CSV 固定寬度 fixed width 區分 字串 日期 浮點數VOC，一行一行讀出來進行三欄位切割: {:?},{},{},{}", time.elapsed(), str_device_id, str_date, i32_voc);
+}
+
+== 20200216 08:08 ==
+
+08:16 Google百元機器雲端速度：
+Finished release [optimized] target(s) in 0.02s
+Running `target/release/turbo_iot`
+001 read_csv 全部 CSV 讀取到記憶體當中: 428.778348ms
+002 CSV 斷行切割: 130ns
+003 CSV split_comma 區分 字串 日期 浮點數VOC，一行一行讀出來進行三欄位切割: 195.178301ms
+all read_csv: 625.717603ms secs
+bohachu@instance-3:~/turbo_iot$ ls -lh *.csv
+-rw-r--r-- 1 bohachu bohachu 29M Feb 15 17:14 turbo.csv
+
+08:16 逗點區隔，大麥克速度：
+001 read_csv 全部 CSV 讀取到記憶體當中: 15.574478ms
+002 CSV 斷行切割: 23ns
+003 CSV split_comma 區分 字串 日期 浮點數VOC，一行一行讀出來進行三欄位切割: 311.620567ms
+read_csv: 328.850723ms secs
+
+08:21 固定寬度，大麥克速度：
+001 read_csv 全部 CSV 讀取到記憶體當中: 14.248645ms
+002 CSV 斷行切割: 22ns
+003 CSV 固定寬度 fixed width 區分 字串 日期 浮點數VOC，一行一行讀出來進行三欄位切割: 237.402441ms
+read_csv_fixed_width: 253.288379ms secs
+
+08:30 固定寬度，大麥克：
+001 read_csv 全部 CSV 讀取到記憶體當中: 19.624288ms
+002 CSV 斷行切割: 24ns
+003 CSV 固定寬度 fixed width 區分 字串 日期 浮點數VOC，一行一行讀出來進行三欄位切割: 234.433139ms,6201492301,2019-12-11 11:41:56.000,485
+read_csv_fixed_width: 254.782101ms secs
+
 == start coding 20200208 18:24 ==
 為了能夠比較Python、C++、Rust三種語言的速度，我們挑選了一個實戰任務會有的IoT大量資料寫入與讀出，並且未來將拿來與ElasticSearch真實配置情況進行速度比較。
 

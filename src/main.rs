@@ -3,6 +3,7 @@ use std::time::{Instant};
 mod handle_json_file;
 
 fn main() -> std::io::Result<()> {
+
 //    let start = Instant::now();
 //    write_json_file::write_json_file()?;
 //    let duration = start.elapsed();
@@ -19,7 +20,7 @@ fn main() -> std::io::Result<()> {
 //    println!("duration:{:?}", duration);
 
     let time = Instant::now();
-    handle_json_file::read_csv();
-    println!("all read_csv: {:?} secs", time.elapsed());
+    handle_json_file::read_csv_vec_fix();
+    println!("read_csv_vec_fix: {:?} secs", time.elapsed());
     Ok(())
 }
